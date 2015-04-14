@@ -78,7 +78,9 @@ void egl_tls_t::setErrorEtcImpl(
             char value[PROPERTY_VALUE_MAX];
             property_get("debug.egl.callstack", value, "0");
             if (atoi(value)) {
-                CallStack stack(LOG_TAG);
+                CallStack stack;
+                stack.update();
+                stack.dump();
             }
         }
         tls->error = error;

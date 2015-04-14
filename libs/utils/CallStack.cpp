@@ -30,11 +30,6 @@ CallStack::CallStack() :
         mCount(0) {
 }
 
-CallStack::CallStack(const char* logtag, int32_t ignoreDepth, int32_t maxDepth) {
-    this->update(ignoreDepth+1, maxDepth);
-    this->dump(logtag);
-}
-
 CallStack::CallStack(const CallStack& rhs) :
         mCount(rhs.mCount) {
     if (mCount) {
@@ -101,7 +96,7 @@ void CallStack::update(int32_t ignoreDepth, int32_t maxDepth) {
     mCount = count > 0 ? count : 0;
 }
 
-void CallStack::dump(const char* logtag, const char* prefix) const {
+void CallStack::dump(const char* prefix) const {
     backtrace_symbol_t symbols[mCount];
 
     get_backtrace_symbols(mStack, mCount, symbols);
@@ -109,9 +104,7 @@ void CallStack::dump(const char* logtag, const char* prefix) const {
         char line[MAX_BACKTRACE_LINE_LENGTH];
         format_backtrace_line(i, &mStack[i], &symbols[i],
                 line, MAX_BACKTRACE_LINE_LENGTH);
-        ALOG(LOG_DEBUG, logtag, "%s%s",
-                prefix ? prefix : "",
-                line);
+        ALOGD("%s%s", prefix, line);
     }
     free_backtrace_symbols(symbols, mCount);
 }

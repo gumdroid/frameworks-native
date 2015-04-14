@@ -246,7 +246,9 @@ BpMemoryHeap::~BpMemoryHeap() {
                 if (VERBOSE) {
                     ALOGD("UNMAPPING binder=%p, heap=%p, size=%d, fd=%d",
                             binder.get(), this, mSize, mHeapId);
-                    CallStack stack(LOG_TAG);
+                    CallStack stack;
+                    stack.update();
+                    stack.dump("callstack");
                 }
 
                 munmap(mBase, mSize);
